@@ -1,0 +1,213 @@
+-- 1. Company
+CREATE TABLE company (
+    company_id SERIAL PRIMARY KEY,
+    company_name VARCHAR(400) NOT NULL unique
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Branch
+CREATE TABLE branch (
+    branch_id SERIAL PRIMARY KEY,
+    branch_name VARCHAR(100) NOT NULL,
+    company_id INT NOT NULL REFERENCES company(company_id) ON DELETE CASCADE,
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(company_id, branch_name)  -- no duplicate branch names inside same company
+);
+
+-- 3. Department
+CREATE TABLE department (
+    department_id SERIAL PRIMARY KEY,
+    department_name VARCHAR(100) NOT NULL,
+    branch_id INT NOT NULL REFERENCES branch(branch_id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(branch_id, department_name) -- no duplicate department in same branch
+);
+
+-- 4. Designation
+CREATE TABLE designation (
+    designation_id SERIAL PRIMARY KEY,
+    designation_name VARCHAR(100) NOT NULL UNIQUE,
+    level ENUM('junior','mid','senior','lead','manager','director') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. Employee (Master)
+CREATE TABLE employee (
+    employee_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    dob DATE,
+    gender ENUM('male','female','other'),
+    date_of_joining DATE NOT NULL,
+    date_of_leaving DATE,
+    status ENUM('active','inactive','retired') DEFAULT 'active',
+    department_id INT REFERENCES department(department_id) ON DELETE SET NULL,
+    branch_id INT REFERENCES branch(branch_id) ON DELETE SET NULL,
+    designation_id INT REFERENCES designation(designation_id) ON DELETE SET NULL,
+    
+    -- audit fields (optional but useful in HRMS)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Indexes for faster joins
+CREATE INDEX idx_employee_department ON employee(department_id);
+CREATE INDEX idx_employee_branch ON employee(branch_id);
+CREATE INDEX idx_employee_designation ON employee(designation_id);
+
+
+-- 6. Employee Personal Details
+CREATE TABLE employee_personal_details (
+    employee_id INT PRIMARY KEY REFERENCES employee(employee_id) ON DELETE CASCADE,
+    contact VARCHAR(15)
+    email VARCHAR(100)
+    blood_group VARCHAR(10),
+    Father's/ Husband's name TEXT (100)
+    next_to_kin_name VARCHAR(100),
+    next_to_kin_relation VARCHAR(100),
+    next_to_kin_contact VARCHAR(15),
+    marital_status VARCHAR(20),
+    anniversary_date DATE
+    current_address TEXT,
+    permanent_address TEXT, (optional)
+    aadhaar_no VARCHAR(20) UNIQUE,
+    pan_no VARCHAR(20) UNIQUE
+);
+
+-- 7. Employee Job Details
+CREATE TABLE employee_job_details (
+    employee_id INT PRIMARY KEY REFERENCES employee(employee_id) ON DELETE CASCADE,
+    employment_type ENUM('permanent','contract','consultant','intern') NOT NULL,
+    reporting_manager_id INT REFERENCES employee(employee_id),
+    probation_period VARCHAR(3),
+    internship_period VARCHAR(3),
+    notice_period_start_date DATE,
+    notice_period_days INT CHECK (notice_period_days >= 0),
+    
+    -- audit fields
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    CONSTRAINT chk_reporting_manager_self CHECK (reporting_manager_id IS NULL OR reporting_manager_id <> employee_id)
+);
+
+-- Index for manager lookups
+CREATE INDEX idx_job_details_manager ON employee_job_details(reporting_manager_id);
+
+-- 8. Employee Salary (History)
+CREATE TABLE employee_salary (
+    salary_id SERIAL PRIMARY KEY,
+    employee_id INT NOT NULL REFERENCES employee(employee_id) ON DELETE CASCADE,
+    
+    uan VARCHAR(20) NOT NULL,                 -- Universal Account Number (EPF)
+    ctc NUMERIC(12,2) NOT NULL,               -- Total CTC
+    basic NUMERIC(12,2) NOT NULL,
+    hra NUMERIC(12,2) DEFAULT 0,
+    allowances NUMERIC(12,2) DEFAULT 0,
+    pf NUMERIC(12,2) DEFAULT 0,
+    esi NUMERIC(12,2) DEFAULT 0,
+
+    effective_from DATE NOT NULL,
+    effective_to DATE,
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Constraints
+    CONSTRAINT uq_salary_uan UNIQUE (employee_id, uan),  -- one UAN per employee
+    CONSTRAINT chk_salary_dates CHECK (effective_to IS NULL OR effective_to > effective_from),
+    CONSTRAINT chk_salary_positive CHECK (
+        ctc >= 0 AND basic >= 0 AND hra >= 0 AND allowances >= 0 AND pf >= 0 AND esi >= 0
+    )
+);
+
+-- Index for history lookups
+CREATE INDEX idx_salary_employee ON employee_salary(employee_id);
+CREATE INDEX idx_salary_effective ON employee_salary(employee_id, effective_from);
+
+
+-- 9. Employee Documents
+CREATE TABLE employee_documents (
+    document_id SERIAL PRIMARY KEY,
+    employee_id INT NOT NULL REFERENCES employee(employee_id) ON DELETE CASCADE,
+    doc_type VARCHAR(50),  -- Offer Letter, PAN, Aadhaar, Resume, pcc, marksheets etc.
+    doc_path TEXT
+);
+
+-- 10. Leave Types
+CREATE TABLE leave_type (
+    leave_type_id SERIAL PRIMARY KEY,
+    leave_name VARCHAR(50) NOT NULL UNIQUE,  -- Sick, Casual, Comp-off, WFH
+    is_half_day_allowed BOOLEAN DEFAULT false
+);
+
+-- 11. Leave Balance (per employee)
+CREATE TABLE leave_balance (
+    employee_id INT PRIMARY KEY REFERENCES employee(employee_id) ON DELETE CASCADE,
+    leave_type_id INT REFERENCES leave_type(leave_type_id),
+    balance INT DEFAULT 0 CHECK (balance >= 0),
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    PRIMARY KEY(employee_id, leave_type_id)
+);
+
+-- 12. Attendance
+CREATE TABLE attendance (
+    attendance_id SERIAL PRIMARY KEY,
+    employee_id INT NOT NULL REFERENCES employee(employee_id) ON DELETE CASCADE,
+    attendance_date DATE NOT NULL,
+    status ENUM('present','absent','wfh','leave') NOT NULL,
+    leave_type_id INT REFERENCES leave_type(leave_type_id),
+    half_day BOOLEAN DEFAULT false,
+    remarks TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(employee_id, attendance_date) -- prevents duplicate entries
+);
+
+-- 13. Holidays
+CREATE TABLE holiday (
+    holiday_id SERIAL PRIMARY KEY,
+    branch_id INT REFERENCES branch(branch_id) ON DELETE CASCADE,
+    holiday_date DATE NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    is_national BOOLEAN DEFAULT false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Prevent duplicate holidays per branch/date
+    CONSTRAINT uq_holiday UNIQUE (branch_id, holiday_date),
+    
+    -- Prevent duplicate national holiday on same date
+    CONSTRAINT uq_national_holiday UNIQUE (holiday_date, is_national),
+    
+    -- Ensure national holidays have no branch, and branch-specific holidays have a branch
+    CONSTRAINT chk_branch_national CHECK (
+        (is_national = TRUE AND branch_id IS NULL) OR
+        (is_national = FALSE AND branch_id IS NOT NULL)
+    )
+);
+
+-- 14. Permissions
+CREATE TABLE permission (
+    permission_id SERIAL PRIMARY KEY,
+    permission_name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT
+);
+
+
+-- 15. Level Permissions
+CREATE TABLE level_permission (
+    level ENUM('junior','mid','senior','lead','manager','director') NOT NULL,
+    permission_id INT NOT NULL REFERENCES permission(permission_id) ON DELETE CASCADE,
+    PRIMARY KEY (level, permission_id)
+);
+
+-- 16. Override Permissions
+CREATE TABLE employee_permission_override (
+    employee_id INT REFERENCES employee(employee_id) ON DELETE CASCADE,
+    permission_id INT REFERENCES permission(permission_id) ON DELETE CASCADE,
+    is_granted BOOLEAN NOT NULL, -- true = extra permission, false = remove permission
+    PRIMARY KEY (employee_id, permission_id)
+);
+
+
+sno, empid, name, desg, doj, dol, contact, dob, father/husband's name, aadhar, pan,  c.add, p.add, next of kin, relation, contact,  email, qualification, exp, blood grp, uan, esic, bank acc, ifsc,

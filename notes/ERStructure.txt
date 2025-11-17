@@ -1,0 +1,70 @@
+🔹 Tables Required (MVP + Employee Details)
+Core Company Structure
+
+Company – multiple companies ko manage karne ke liye.
+
+Branch – ek company ke multiple branches (Delhi, Maharashtra, Kerala).
+
+Department – HR, Tech, Sales, etc.
+
+Designation – Job titles (HR Manager, Software Engineer, Consultant, etc.).
+
+Employee Related
+
+Employee – master employee table (basic info).
+
+EmployeePersonalDetails – blood group, emergency contact, etc.
+
+EmployeeJobDetails – employment type, offer letter, reporting manager, etc.
+
+EmployeeSalary – salary structure + history.
+
+EmployeeDocuments – resumes, offer letters, ID proofs.
+
+Attendance + Leave
+
+Attendance – daily attendance (present/absent/leave/WFH).
+
+LeaveType – Sick, Casual, Comp-off, Half-day, etc.
+
+LeaveBalance – har employee ke liye kitni leaves available.
+
+Holiday – bank holidays, custom Saturdays off, etc.
+
+✅ Total tables = 13 (basic HRMS MVP ke liye).
+Later tum Performance, Payroll, Training add karoge to aur tables badhenge.
+
+🔹 How Tables Are Connected
+
+SQL mein connections Foreign Keys (FK) se bante hain.
+Example:
+
+Ek Branch ek Company ka hissa hoti hai → branch.company_id (FK)
+
+Ek Department ek Branch ka hissa hoti hai → department.branch_id (FK)
+
+Ek Employee ek Department ka hissa hota hai → employee.department_id (FK)
+
+Relationships (high-level)
+
+Company 1 → M Branch
+
+Branch 1 → M Department
+
+Department 1 → M Employee
+
+Designation 1 → M Employee
+
+Employee 1 → 1 EmployeePersonalDetails
+
+Employee 1 → 1 EmployeeJobDetails
+
+Employee 1 → M EmployeeSalary (salary history)
+
+Employee 1 → M EmployeeDocuments
+
+Employee 1 → M Attendance
+
+Employee 1 → 1 LeaveBalance
+
+LeaveType 1 → M Attendance

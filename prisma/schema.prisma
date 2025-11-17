@@ -1,0 +1,411 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//--------------------------------- ENUMS -------------------------------------------------------------- 
+
+enum Gender {
+  male
+  female
+  other
+}
+
+enum EmployeeStatus {
+  active
+  inactive
+  retired
+}
+
+enum EmploymentType {
+  permanent
+  contract
+  consultant
+  intern
+}
+
+enum Level {
+  junior
+  mid
+  senior
+  lead
+  manager
+  director
+}
+
+enum AttendanceStatus {
+  present
+  absent
+  wfh
+  leave
+}
+
+enum LeaveRequestStatus {
+  pending
+  approved
+  rejected
+  cancelled
+}
+
+enum ProjectSiteType {
+  office
+  plant
+  warehouse
+  client_site
+}
+
+// -------------------- ORG STRUCTURE --------------------
+
+model Branch {
+  branch_id   Int      @id @default(autoincrement())
+  branch_name String   @unique
+  address     String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  is_deleted  Boolean  @default(false) // Added for soft delete
+
+  departments Department[]
+  employees   EmployeeMaster[]
+  holidays    Holiday[]
+
+  projectSite ProjectSite[]
+}
+
+model ProjectSite {
+  site_id    Int             @id @default(autoincrement())
+  site_name  String          @unique @db.VarChar(100)
+  site_type  ProjectSiteType @default(office)
+  branch_id  Int
+  address    String?
+  pincode    String?
+  created_at DateTime        @default(now())
+  updated_at DateTime        @updatedAt
+  is_deleted Boolean         @default(false)
+
+  branch    Branch           @relation(fields: [branch_id], references: [branch_id], onDelete: Cascade)
+  employees EmployeeMaster[]
+  holidays  Holiday[] // optional, if holidays differ per site
+
+  @@unique([branch_id, site_name]) // ensures no duplicate site names per branch
+}
+
+model Department {
+  department_id   Int      @id @default(autoincrement())
+  department_name String   @unique
+  branch_id       Int
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  is_deleted      Boolean  @default(false) // Added for soft delete
+
+  branch    Branch           @relation(fields: [branch_id], references: [branch_id], onDelete: Cascade)
+  employees EmployeeMaster[]
+
+  @@unique([branch_id, department_name])
+}
+
+model Designation {
+  designation_id   Int      @id @default(autoincrement())
+  designation_name String   @unique
+  level            Level
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  is_deleted       Boolean  @default(false) // Added for soft delete
+
+  employees EmployeeMaster[]
+}
+
+// -------------------- HR MODULE --------------------
+
+model EmployeeMaster {
+  employee_id     Int            @id @default(autoincrement())
+  employee_code   String         @unique
+  name            String
+  dob             DateTime?      @db.Date
+  gender          Gender?
+  date_of_joining DateTime       @db.Date
+  date_of_leaving DateTime?      @db.Date
+  status          EmployeeStatus @default(active)
+  is_deleted      Boolean        @default(false)
+
+  department_id   Int?
+  branch_id       Int?
+  designation_id  Int?
+  project_site_id Int?
+
+  department   Department?          @relation(fields: [department_id], references: [department_id], onDelete: SetNull)
+  branch       Branch?              @relation(fields: [branch_id], references: [branch_id], onDelete: SetNull)
+  designation  Designation?         @relation(fields: [designation_id], references: [designation_id], onDelete: SetNull)
+  projectSite  ProjectSite?         @relation(fields: [project_site_id], references: [site_id], onDelete: SetNull)
+  subordinates EmployeeJobDetails[] @relation("ManagerRelation")
+  leaveRequest LeaveRequest[]       @relation("ApproverRelation")
+  auditLog     AuditLog[]           @relation("PerformedByRelation")
+
+  personal_details     EmployeePersonalDetails?
+  job_details          EmployeeJobDetails?
+  documents            EmployeeDocuments[]
+  leave_balances       LeaveBalance[]
+  attendances          Attendance[]
+  leave_requests       LeaveRequest[]
+  permission_overrides EmployeePermissionOverride[]
+  user                 User?
+  audit_logs           AuditLog[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([department_id])
+  @@index([branch_id])
+  @@index([designation_id])
+  @@index([branch_id, department_id])
+  @@index([project_site_id])
+}
+
+model EmployeePersonalDetails {
+  employee_id            Int       @id
+  contact                String?   @unique @db.VarChar(15)
+  email                  String?   @unique @db.VarChar(100)
+  blood_group            String?   @db.VarChar(10)
+  father_or_husband_name String?
+  next_to_kin_name       String?
+  next_to_kin_relation   String?
+  next_to_kin_contact    String?   @db.VarChar(15)
+  marital_status         String?
+  anniversary_date       DateTime? @db.Date
+  current_address        String?
+  permanent_address      String?
+  aadhaar_no             String?   @unique @db.VarChar(20)
+  pan_no                 String?   @unique @db.VarChar(20)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  employee EmployeeMaster @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade)
+}
+
+model EmployeeJobDetails {
+  employee_id              Int            @id
+  employment_type          EmploymentType
+  reporting_manager_id     Int?
+  probation_period         String?        @db.VarChar(30)
+  internship_period        String?        @db.VarChar(30)
+  notice_period_start_date DateTime?      @db.Date
+  notice_period_days       Int?
+
+  employee EmployeeMaster  @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade)
+  manager  EmployeeMaster? @relation("ManagerRelation", fields: [reporting_manager_id], references: [employee_id], onDelete: SetNull)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([reporting_manager_id])
+}
+
+model EmployeeDocuments {
+  document_id Int      @id @default(autoincrement())
+  employee_id Int
+  doc_type    String?
+  doc_path    String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  employee EmployeeMaster @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade)
+}
+
+// -------------------- Leave Types --------------------
+model LeaveType {
+  leave_type_id       Int      @id @default(autoincrement())
+  leave_name          String   @unique @db.VarChar(50)
+  is_half_day_allowed Boolean  @default(false)
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+  is_deleted          Boolean  @default(false) // Added for soft delete
+
+  leave_balances LeaveBalance[]
+  attendances    Attendance[]
+  leave_requests LeaveRequest[]
+}
+
+// -------------------- Leave Balance --------------------
+model LeaveBalance {
+  employee_id   Int
+  leave_type_id Int
+  balance       Int      @default(0)
+  last_updated  DateTime @default(now())
+
+  employee   EmployeeMaster @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade)
+  leave_type LeaveType      @relation(fields: [leave_type_id], references: [leave_type_id], onDelete: Cascade)
+
+  @@id([employee_id, leave_type_id]) // composite PK
+}
+
+// -------------------- Leave Requests --------------------
+model LeaveRequest {
+  leave_request_id Int                @id @default(autoincrement())
+  employee_id      Int
+  leave_type_id    Int
+  start_date       DateTime           @db.Date
+  end_date         DateTime           @db.Date
+  reason           String?            @db.Text
+  status           LeaveRequestStatus @default(pending)
+  approved_by      Int?
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  is_deleted       Boolean            @default(false) // Added for soft delete
+
+  employee   EmployeeMaster  @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade)
+  leave_type LeaveType       @relation(fields: [leave_type_id], references: [leave_type_id], onDelete: Cascade)
+  approver   EmployeeMaster? @relation("ApproverRelation", fields: [approved_by], references: [employee_id])
+
+  @@index([employee_id, status])
+  @@index([start_date, end_date])
+}
+
+// -------------------- Attendance --------------------
+model Attendance {
+  attendance_id   Int              @id @default(autoincrement())
+  employee_id     Int
+  attendance_date DateTime         @db.Date
+  status          AttendanceStatus
+  leave_type_id   Int?
+  half_day        Boolean          @default(false)
+  remarks         String?          @db.Text
+  created_at      DateTime         @default(now())
+  updated_at      DateTime         @updatedAt
+  is_deleted      Boolean          @default(false) // Added for soft delete
+
+  employee   EmployeeMaster @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade)
+  leave_type LeaveType?     @relation(fields: [leave_type_id], references: [leave_type_id])
+
+  @@unique([employee_id, attendance_date]) // prevent duplicate entries
+  @@index([attendance_date, status])
+  @@index([employee_id, attendance_date])
+}
+
+// -------------------- Holidays --------------------
+model Holiday {
+  holiday_id   Int      @id @default(autoincrement())
+  branch_id    Int?
+  site_id      Int?
+  holiday_date DateTime @db.Date
+  description  String   @db.VarChar(200)
+  is_national  Boolean  @default(false)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  is_deleted   Boolean  @default(false) // Added for soft delete
+
+  branch      Branch?       @relation(fields: [branch_id], references: [branch_id], onDelete: Cascade)
+  projectSite ProjectSite[]
+
+  @@unique([branch_id, holiday_date])
+  @@unique([holiday_date, is_national])
+}
+
+// -------------------- Permissions --------------------
+model Permission {
+  permission_id   Int     @id @default(autoincrement())
+  permission_name String  @unique @db.VarChar(100)
+  description     String?
+  is_deleted      Boolean @default(false) // Added for soft delete
+
+  level_permissions             LevelPermission[]
+  employee_permission_overrides EmployeePermissionOverride[]
+}
+
+// -------------------- Level Permissions --------------------
+model LevelPermission {
+  level         Level
+  permission_id Int
+
+  permission Permission @relation(fields: [permission_id], references: [permission_id], onDelete: Cascade)
+
+  @@id([level, permission_id])
+}
+
+// -------------------- Override Permissions --------------------
+model EmployeePermissionOverride {
+  employee_id   Int
+  permission_id Int
+  is_granted    Boolean
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  employee   EmployeeMaster @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade)
+  permission Permission     @relation(fields: [permission_id], references: [permission_id], onDelete: Cascade)
+
+  @@id([employee_id, permission_id])
+}
+
+// -------------------- Authentication --------------------
+model User {
+  user_id     Int       @id @default(autoincrement())
+  azure_oid   String?   @unique
+  email       String    @unique
+  password    String?
+  name        String?   
+  role        String?   // (HR, ADMIN, EMPLOYEE etc.)
+  employee_id Int?      @unique
+  last_login  DateTime?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  is_active   Boolean   @default(true)
+  is_deleted  Boolean   @default(false) // Added for soft delete
+
+  employee EmployeeMaster? @relation(fields: [employee_id], references: [employee_id], onDelete: SetNull)
+
+  UserPermissions UserPermissions[]
+}
+
+// -------------------- Audit Log --------------------
+model AuditLog {
+  audit_id     Int      @id @default(autoincrement())
+  employee_id  Int?
+  action       String   @db.VarChar(200)
+  entity_name  String   @db.VarChar(100)
+  entity_id    Int?
+  old_values   Json?
+  new_values   Json?
+  performed_by Int?
+  created_at   DateTime @default(now())
+
+  employee          EmployeeMaster? @relation(fields: [employee_id], references: [employee_id], onDelete: SetNull)
+  performed_by_user EmployeeMaster? @relation("PerformedByRelation", fields: [performed_by], references: [employee_id])
+}
+
+// -------------------- Import Log --------------------
+
+model ImportLog {
+  id            Int      @id @default(autoincrement())
+  import_type   String   @default("generic")
+  file_name     String
+  imported_by   String // could be system / email of admin
+  record_count  Int
+  status        String // like success, failure
+  error_summary String? // short error message/ null
+  created_at    DateTime @default(now())
+}
+
+// --------------------- Import Permissions --------------
+
+model UserPermissions {
+  id                    Int      @id @default(autoincrement())
+  user_id               Int
+  can_import_master_data  Boolean  @default(false)
+  can_import_employees  Boolean  @default(false)
+  can_import_attendance Boolean  @default(false)
+  can_import_salary     Boolean  @default(false)
+  can_import_holidays   Boolean  @default(false)
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [user_id])
+}

@@ -1,0 +1,21 @@
+site_name,site_type,branch_id,address,pincode,created_at,updated_at,is_deleted
+Head Site 1,warehouse,1,Head Industrial Area 1,403723,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Head Site 2,office,1,Head Industrial Area 2,361232,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Mumbai Site 1,factory,2,Mumbai Industrial Area 1,513682,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Mumbai Site 2,factory,2,Mumbai Industrial Area 2,517527,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Pune Site 1,warehouse,3,Pune Industrial Area 1,219154,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Pune Site 2,office,3,Pune Industrial Area 2,554781,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Chennai Site 1,warehouse,4,Chennai Industrial Area 1,728886,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Chennai Site 2,factory,4,Chennai Industrial Area 2,375590,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Bangalore Site 1,warehouse,5,Bangalore Industrial Area 1,152444,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Bangalore Site 2,warehouse,5,Bangalore Industrial Area 2,676878,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Kolkata Site 1,office,6,Kolkata Industrial Area 1,520284,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Kolkata Site 2,warehouse,6,Kolkata Industrial Area 2,901565,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Hyderabad Site 1,office,7,Hyderabad Industrial Area 1,560297,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Hyderabad Site 2,office,7,Hyderabad Industrial Area 2,330834,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Ahmedabad Site 1,office,8,Ahmedabad Industrial Area 1,656161,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Ahmedabad Site 2,factory,8,Ahmedabad Industrial Area 2,117651,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Noida Site 1,office,9,Noida Industrial Area 1,627639,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Noida Site 2,warehouse,9,Noida Industrial Area 2,813166,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Jaipur Site 1,office,10,Jaipur Industrial Area 1,968630,2025-11-10 09:11:08,2025-11-10 09:11:08,False
+Jaipur Site 2,factory,10,Jaipur Industrial Area 2,563078,2025-11-10 09:11:08,2025-11-10 09:11:08,False

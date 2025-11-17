@@ -1,0 +1,14 @@
+[
+  {
+    "rowNumber": 1,
+    "error": "\nInvalid `prisma.employeePersonalDetails.upsert()` invocation:\n\n\nUnique constraint failed on the fields: (`pan_no`)"
+  },
+  {
+    "rowNumber": 2,
+    "error": "\nInvalid `prisma.employeePersonalDetails.upsert()` invocation:\n\n\nUnique constraint failed on the fields: (`pan_no`)"
+  },
+  {
+    "rowNumber": 3,
+    "error": "\nInvalid `prisma.employeePersonalDetails.upsert()` invocation:\n\n\nUnique constraint failed on the fields: (`pan_no`)"
+  }
+]

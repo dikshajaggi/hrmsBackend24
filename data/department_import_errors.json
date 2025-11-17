@@ -1,0 +1,182 @@
+[
+  {
+    "row": 6,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 7,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 8,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 9,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 10,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 11,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 12,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 13,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 14,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 15,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 16,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 17,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 18,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 19,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 20,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 21,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 22,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 23,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 24,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 25,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 26,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 27,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 28,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 29,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 30,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 31,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 32,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 33,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 34,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 35,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 36,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 37,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 38,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 39,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 40,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 41,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 42,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 43,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 44,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 45,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 46,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 47,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 48,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 49,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  },
+  {
+    "row": 50,
+    "msg": "\nInvalid `prisma.department.upsert()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. Record not found"
+  }
+]
