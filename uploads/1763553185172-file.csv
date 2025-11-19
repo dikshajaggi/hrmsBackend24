@@ -1,0 +1,10 @@
+date,description,branch_id,site_id,is_national
+2025-01-01,New Year,1,,true
+2025-01-26,Republic Day,,,true
+2025-03-14,Holi,1,3,false
+2025-04-10,Ram Navami,1,2,false
+2025-05-01,Labour Day,,,true
+2025-08-15,Independence Day,,,true
+2025-10-02,Gandhi Jayanti,,,true
+2025-11-01,Foundation Day,1,,false
+2025-12-25,Christmas Day,1,3,false

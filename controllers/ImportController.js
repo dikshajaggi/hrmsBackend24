@@ -1,5 +1,6 @@
 import { importAttendance } from "../scripts/import-attendance.js"
 import { importEmployees } from "../scripts/import-employees.js"
+import { importHoliday } from "../scripts/import-holidays.js";
 import { importBranch, importDepartment, importDesignation, importProjectSite } from "../scripts/import-masters.js"
 
 async function handleImport(req, res, importFunction, entityName) {
@@ -48,7 +49,8 @@ export const importEmployeesHandler = (req, res) =>
 export const importAttendanceHandler = (req, res) =>
   handleImport(req, res, importAttendance, "Attendance");
 
-
+export const importHolidayHandler = (req, res) =>
+  handleImport(req, res, importHoliday, "Holiday");
 
 // export const importEmployeesHandler = async(req, res) => {
 //   try {

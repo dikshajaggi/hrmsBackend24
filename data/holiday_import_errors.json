@@ -1,0 +1,18 @@
+[
+  {
+    "row": 2,
+    "msg": "\nInvalid `prisma.holiday.upsert()` invocation:\n\n{\n  where: {\n    branch_id_holiday_date: {\n      holiday_date: new Date(\"1970-01-01T00:00:45.683Z\"),\n+     branch_id: Int\n    }\n  },\n  update: {\n    holiday_date: new Date(\"1970-01-01T00:00:45.683Z\"),\n    description: \"Republic Day\",\n    is_national: true,\n    branch_id: null,\n    site_id: null\n  },\n  create: {\n    holiday_date: new Date(\"1970-01-01T00:00:45.683Z\"),\n    description: \"Republic Day\",\n    is_national: true,\n    branch_id: null,\n    site_id: null\n  }\n}\n\nArgument `branch_id` must not be null."
+  },
+  {
+    "row": 5,
+    "msg": "\nInvalid `prisma.holiday.upsert()` invocation:\n\n{\n  where: {\n    branch_id_holiday_date: {\n      holiday_date: new Date(\"1970-01-01T00:00:45.778Z\"),\n+     branch_id: Int\n    }\n  },\n  update: {\n    holiday_date: new Date(\"1970-01-01T00:00:45.778Z\"),\n    description: \"Labour Day\",\n    is_national: true,\n    branch_id: null,\n    site_id: null\n  },\n  create: {\n    holiday_date: new Date(\"1970-01-01T00:00:45.778Z\"),\n    description: \"Labour Day\",\n    is_national: true,\n    branch_id: null,\n    site_id: null\n  }\n}\n\nArgument `branch_id` must not be null."
+  },
+  {
+    "row": 6,
+    "msg": "\nInvalid `prisma.holiday.upsert()` invocation:\n\n{\n  where: {\n    branch_id_holiday_date: {\n      holiday_date: new Date(\"1970-01-01T00:00:45.884Z\"),\n+     branch_id: Int\n    }\n  },\n  update: {\n    holiday_date: new Date(\"1970-01-01T00:00:45.884Z\"),\n    description: \"Independence Day\",\n    is_national: true,\n    branch_id: null,\n    site_id: null\n  },\n  create: {\n    holiday_date: new Date(\"1970-01-01T00:00:45.884Z\"),\n    description: \"Independence Day\",\n    is_national: true,\n    branch_id: null,\n    site_id: null\n  }\n}\n\nArgument `branch_id` must not be null."
+  },
+  {
+    "row": 7,
+    "msg": "\nInvalid `prisma.holiday.upsert()` invocation:\n\n{\n  where: {\n    branch_id_holiday_date: {\n      holiday_date: new Date(\"1970-01-01T00:00:45.932Z\"),\n+     branch_id: Int\n    }\n  },\n  update: {\n    holiday_date: new Date(\"1970-01-01T00:00:45.932Z\"),\n    description: \"Gandhi Jayanti\",\n    is_national: true,\n    branch_id: null,\n    site_id: null\n  },\n  create: {\n    holiday_date: new Date(\"1970-01-01T00:00:45.932Z\"),\n    description: \"Gandhi Jayanti\",\n    is_national: true,\n    branch_id: null,\n    site_id: null\n  }\n}\n\nArgument `branch_id` must not be null."
+  }
+]
