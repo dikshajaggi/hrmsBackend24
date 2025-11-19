@@ -44,11 +44,19 @@ enum Level {
 }
 
 enum AttendanceStatus {
-  present
-  absent
-  wfh
-  leave
+  present       // P
+  holiday       // H
+  saturday_off  // S
+  casual_leave  // L
+  half_day_casual_1  // L1
+  half_day_casual_2  // L2
+  sick_leave    // SL
+  sick_leave_1  // SL1
+  sick_leave_2  // SL2
+  wfh           // W
+  comp_off      // C
 }
+
 
 enum LeaveRequestStatus {
   pending

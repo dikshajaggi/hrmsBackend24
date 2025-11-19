@@ -1,13 +1,19 @@
 import express from "express"
 import EmployeeMasterRoutes from "./EmployeeMasterRoutes.js"
 import designationRoutes from "./DesignationRoutes.js"
+import departmentRoutes from "./DepartmentRoutes.js"
 import importRoutes from "./ImportRoutes.js"
+import branchRoutes from "./BranchRoutes.js"
+import projectSiteRoutes from "./ProjectSiteRoutes.js"
 
 
 const router = express.Router()
 
 router.use("/api/emp", EmployeeMasterRoutes)
+router.use("/api/branch", branchRoutes)
+router.use("/api/projectSite", projectSiteRoutes)
 router.use("/api/designation", designationRoutes)
+router.use("/api/department", departmentRoutes)
 router.use("/api/import", importRoutes)
 
 export default router

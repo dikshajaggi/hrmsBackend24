@@ -1,14 +1,122 @@
 [
   {
     "rowNumber": 1,
-    "error": "\nInvalid `prisma.employeePersonalDetails.upsert()` invocation:\n\n\nUnique constraint failed on the fields: (`pan_no`)"
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
   },
   {
     "rowNumber": 2,
-    "error": "\nInvalid `prisma.employeePersonalDetails.upsert()` invocation:\n\n\nUnique constraint failed on the fields: (`pan_no`)"
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
   },
   {
     "rowNumber": 3,
-    "error": "\nInvalid `prisma.employeePersonalDetails.upsert()` invocation:\n\n\nUnique constraint failed on the fields: (`pan_no`)"
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 4,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 5,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 6,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 7,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 8,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 9,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 10,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 11,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 12,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 13,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 14,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 15,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 16,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 17,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 18,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 19,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
+  },
+  {
+    "rowNumber": 20,
+    "errors": [
+      "invalid department/branch/designation/project_site"
+    ]
   }
 ]
