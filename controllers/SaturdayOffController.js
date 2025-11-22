@@ -1,4 +1,5 @@
 import prisma from "../db/db.config.js";
+import { buildMonthRangeUTC, parseYMDToUTC } from "../utils/date.js";
 
 function getAllSaturdays(year, month) {
   const saturdays = [];
@@ -18,6 +19,9 @@ function getSaturdayWeekNumber(date) {
   const day = date.getUTCDate();
   return Math.ceil(day / 7);
 }
+
+const parseNullableInt = (value) =>
+  value ? Number(value) : null;
 
 async function ensureDefaultGlobalSaturdayRule() {
   const global = await prisma.saturdayoff.findFirst({
@@ -308,47 +312,38 @@ export const getSaturdayRule = async (req, res) => {
 
 export const saveCustomSaturdayOverrides = async (req, res) => {
   try {
-    let { branch_id, site_id, year, month, dates } = req.body;
+    const { branch_id, site_id, year, month, dates } = req.body;
 
     if (!Array.isArray(dates) || !year || month === undefined) {
-      return res.status(400).json({ message: "dates[], year, month required" });
+      return res.status(400).json({
+        message: "dates[], year, month required"
+      });
     }
 
-    const cleanBranchId = branch_id ? Number(branch_id) : null;
-    const cleanSiteId = site_id ? Number(site_id) : null;
+    const branchId = parseNullableInt(branch_id);
+    const siteId = parseNullableInt(site_id);
 
-    // Delete existing overrides for the month + same branch/site
-    const monthStart = new Date(Date.UTC(year, month, 1));
-    const monthEnd = new Date(Date.UTC(year, month + 1, 0));
+    const { start: monthStart, end: monthEnd } = buildMonthRangeUTC(year, month);
 
+    // 1️⃣ Delete existing overrides
     await prisma.saturdayoffoverride.deleteMany({
       where: {
         override_date: { gte: monthStart, lte: monthEnd },
-        branch_id: cleanBranchId,
-        site_id: cleanSiteId,
+        branch_id: branchId,
+        site_id: siteId
       }
     });
 
-    // Insert new overrides
-    const payload = dates.map(d => {
-      // d is "2025-03-08"
+    // 2️⃣ Prepare payload
+    const payload = dates.map(dateStr => ({
+      branch_id: branchId,
+      site_id: siteId,
+      override_date: parseYMDToUTC(dateStr),
+      status: "off"
+    }));
 
-      const [y, m, day] = d.split("-").map(Number);
-
-      // Build local date with no timezone shift
-      const overrideUTC = new Date(Date.UTC(y, m - 1, day));
-
-      return {
-        branch_id: cleanBranchId,
-        site_id: cleanSiteId,
-        override_date: overrideUTC,
-        status: "off"
-      };
-    });
-
-    await prisma.saturdayoffoverride.createMany({
-      data: payload
-    });
+    // 3️⃣ Insert
+    await prisma.saturdayoffoverride.createMany({ data: payload });
 
     return res.status(200).json({
       message: "Custom Saturday overrides saved",
@@ -356,30 +351,28 @@ export const saveCustomSaturdayOverrides = async (req, res) => {
     });
 
   } catch (err) {
-    console.error("SAVE CUSTOM OVERRIDES ERROR:", err);
+    console.error("SAVE CUSTOM ERR:", err);
     return res.status(500).json({ message: "Server Error" });
   }
 };
 
-
 export const getCustomSaturdayOverrides = async (req, res) => {
   try {
-    let { branch_id, site_id, year, month } = req.query;
+    const { branch_id, site_id, year, month } = req.query;
 
     if (!year || month === undefined)
       return res.status(400).json({ message: "year and month required" });
 
-    const cleanBranchId = branch_id ? Number(branch_id) : null;
-    const cleanSiteId = site_id ? Number(site_id) : null;
+    const branchId = parseNullableInt(branch_id);
+    const siteId = parseNullableInt(site_id);
 
-    const monthStart = new Date(Date.UTC(year, month, 1));
-    const monthEnd = new Date(Date.UTC(year, month + 1, 0));
+    const { start: monthStart, end: monthEnd } = buildMonthRangeUTC(year, month);
 
     const overrides = await prisma.saturdayoffoverride.findMany({
       where: {
         override_date: { gte: monthStart, lte: monthEnd },
-        branch_id: cleanBranchId,
-        site_id: cleanSiteId,
+        branch_id: branchId,
+        site_id: siteId
       },
       orderBy: { override_date: "asc" }
     });
@@ -392,7 +385,7 @@ export const getCustomSaturdayOverrides = async (req, res) => {
     });
 
   } catch (err) {
-    console.error("GET CUSTOM OVERRIDES ERROR:", err);
+    console.error("GET CUSTOM ERR:", err);
     return res.status(500).json({ message: "Server Error" });
   }
 };
